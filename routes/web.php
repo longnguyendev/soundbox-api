@@ -46,7 +46,7 @@ Route::get('songs/{slug}/edit', function ($slug) {
     return view('songs.edit', compact('song', 'categories', 'singers'));
 })->middleware(['CheckRole'])->name('songs.edit');
 
-Route::resource('song', SongController::class);
+// Route::resource('song', SongController::class);
 
 Route::get('users/create', function () {
     return view('users.create');

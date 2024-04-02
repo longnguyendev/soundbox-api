@@ -47,11 +47,11 @@ class UserController extends Controller
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $avatarName = time() . $avatar->getClientOriginalName();
-            $avatarPath = $avatar->storeAs(
-                'public/avatars',
+            $avatarPath = $avatar->move(
+                'uploads/avatars',
                 $avatarName
             );
-            $user->avatar = basename($avatarPath);
+            $user->avatar = $avatarPath;
         }
         if ($user->save()) {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {

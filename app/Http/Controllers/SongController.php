@@ -65,16 +65,23 @@ class SongController extends Controller
         $durationInSeconds = $fileInfo['playtime_seconds'];
         $slug = strtolower($this->convert_name(preg_replace('!\s+!', ' ', trim($request->name))));
         $fileName =  $slug . "-" . time() .  '.' . $file->getClientOriginalExtension();
-        $pathSong =  $file->move('uploads/filePaths', $fileName);
+
+        $pathSong =  $file->storeAs(
+            'public/filePaths',
+            $fileName
+        );
         $song = new Song;
         $song->name = preg_replace('!\s+!', ' ', $request->name);
-        $song->file_path = basename($pathSong);
+        $song->file_path = $pathSong;
         $song->total_time = $durationInSeconds;
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail');
             $thumbnailName = md5(time()) . '.' . $thumbnail->getClientOriginalExtension();
-            $pathThumbnail = $thumbnail->move('uploads/thumbnails', $thumbnailName);
-            $song->thumbnail = basename($pathThumbnail);
+            $pathThumbnail = $thumbnail->storeAs(
+                'public/thumbnails',
+                $thumbnailName
+            );
+            $song->thumbnail = $pathThumbnail;
         }
         if ($song->save()) {
             $song->categories()->attach($request->input('category'));
@@ -140,14 +147,14 @@ class SongController extends Controller
         $slug = strtolower($this->convert_name(preg_replace('!\s+!', ' ', trim($request->name))));
         $song->slug = $slug . '.' . $song->id;
         if ($request->hasFile('file')) {
-            $destinationPath = 'storage/filePath';
+            $destinationPath = 'storage/filePaths';
             if (File::exists($destinationPath  . "/" . $song->file)) {
                 File::delete($destinationPath  . "/" . $song->file);
             }
             $file = $request->file('file');
             $fileName = $slug  . time() .  '.' . $file->getClientOriginalExtension();
             $filePath =  $file->storeAs(
-                "public/filePath",
+                "public/filePaths",
                 $fileName
             );
 
@@ -159,7 +166,7 @@ class SongController extends Controller
                 File::delete($destinationPath  . "/" . $song->thumbnail);
             }
             $thumbnail = $request->file('thumbnail');
-            $thumbnailName = time() . $thumbnail->getClientOriginalName();
+            $thumbnailName = md5(time()) . '.' . $thumbnail->getClientOriginalExtension();
             $thumbnailPath = $thumbnail->storeAs(
                 "public/thumbnails",
                 $thumbnailName
@@ -186,8 +193,8 @@ class SongController extends Controller
         $song->categories()->detach();
         $song->singers()->detach();
         $song->comments()->delete();
-        if (File::exists("storage/filePath"  . "/" . $song->file)) {
-            File::delete("storage/filePath"  . "/" . $song->file);
+        if (File::exists("storage/filePaths"  . "/" . $song->file)) {
+            File::delete("storage/filePaths"  . "/" . $song->file);
         }
         if (File::exists("storage/thumbnails"  . "/" . $song->thumbnail)) {
             File::delete("storage/thumbnails"  . "/" . $song->thumbnail);
@@ -197,7 +204,7 @@ class SongController extends Controller
     }
     public function streamSong($fileName)
     {
-        $filePath = 'public/filePath/' . $fileName;
+        $filePath = 'public/filePaths/' . $fileName;
         $stream = Storage::disk('local')->readStream($filePath);
 
         $headers = [

@@ -66,10 +66,7 @@ class SongController extends Controller
         $durationInSeconds = $fileInfo['playtime_seconds'];
         $slug = strtolower($this->convert_name(preg_replace('!\s+!', ' ', trim($request->name))));
         $fileName =  $slug . "-" . time() .  '.' . $file->getClientOriginalExtension();
-        $pathSong =  $file->storeAs(
-            'public/filePath',
-            $fileName
-        );
+        $pathSong =  $file->move(public_path('uploads/filePaths', $fileName));
         $song = new Song;
         $song->name = preg_replace('!\s+!', ' ', $request->name);
         $song->file_path = basename($pathSong);
@@ -77,10 +74,7 @@ class SongController extends Controller
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail');
             $thumbnailName = time() . $thumbnail->getClientOriginalName();
-            $pathThumbnail = $thumbnail->storeAs(
-                'public/thumbnails',
-                $thumbnailName
-            );
+            $pathThumbnail = $thumbnail->move('uploads/thumbnails', $thumbnailName);
             $song->thumbnail = basename($pathThumbnail);
         }
         if ($song->save()) {

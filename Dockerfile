@@ -16,3 +16,5 @@ COPY . .
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+RUN chown -R www-data:www-data /var/www
+RUN chmod 755 /var/www

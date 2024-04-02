@@ -13,7 +13,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use getID3;
-use getid3_lib;
 
 class SongController extends Controller
 {
@@ -66,14 +65,14 @@ class SongController extends Controller
         $durationInSeconds = $fileInfo['playtime_seconds'];
         $slug = strtolower($this->convert_name(preg_replace('!\s+!', ' ', trim($request->name))));
         $fileName =  $slug . "-" . time() .  '.' . $file->getClientOriginalExtension();
-        $pathSong =  $file->move(public_path('uploads/filePaths', $fileName));
+        $pathSong =  $file->move('uploads/filePaths', $fileName);
         $song = new Song;
         $song->name = preg_replace('!\s+!', ' ', $request->name);
         $song->file_path = basename($pathSong);
         $song->total_time = $durationInSeconds;
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail');
-            $thumbnailName = time() . $thumbnail->getClientOriginalName();
+            $thumbnailName = md5(time()) . '.' . $thumbnail->getClientOriginalExtension();
             $pathThumbnail = $thumbnail->move('uploads/thumbnails', $thumbnailName);
             $song->thumbnail = basename($pathThumbnail);
         }

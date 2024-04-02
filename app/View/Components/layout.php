@@ -23,8 +23,8 @@ class layout extends Component
      */
     public function render(): View|Closure|string
     {
-        $Songs = Song::all();
-        $categories = Category::all();
-        return view('components.layout', compact('Songs', 'categories'));
+        // $songs = Song::all();
+        // $categories = Category::all();
+        return view('components.layout');
     }
 }

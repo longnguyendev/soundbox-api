@@ -158,7 +158,7 @@ class SongController extends Controller
                 $fileName
             );
 
-            $song->file_path = basename($filePath);
+            $song->file_path = $filePath;
         }
         if ($request->hasFile('thumbnail')) {
             $destinationPath = 'storage/thumbnails';
@@ -172,7 +172,7 @@ class SongController extends Controller
                 $thumbnailName
             );
 
-            $song->thumbnail = basename($thumbnailPath);
+            $song->thumbnail = $thumbnailPath;
         }
         if ($song->save()) {
             $song->categories()->sync($request->input('category'));

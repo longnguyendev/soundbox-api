@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug')->default("");
             $table->string('file_path');
             $table->integer('total_time');
-            $table->string('thumbnail')->default('thumbnail-default.jpg');
+            $table->string('thumbnail')->default('uploads/thumbnails/thumbnail-default.jpg');
             $table->integer('listens')->default(0);
             $table->string('packet')->default('free');
             $table->timestamp('created_at')->useCurrent();

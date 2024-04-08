@@ -33,7 +33,7 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'gender' => 'required',
             'password' => 'required',
         ]);

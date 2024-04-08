@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::get('/user', [AuthenController::class, 'me'])->middleware('auth:sanctum');
 Route::post('auth/login', [AuthenController::class, 'login'])->name('login.auth');
+Route::post('auth/loginbe', [AuthenController::class, 'loginBe'])->name('loginBe.auth');
 Route::post('auth/logout', [AuthenController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('home', [HomeController::class, 'getHome']);
 

@@ -87,6 +87,26 @@ class AuthenController extends Controller
             'email' => 'Tài khoản hoặc mật khẩu không chính xác.',
         ]);
     }
+    public function loginBe(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $user = User::where('email', $request->email)->first();
+            if ($user->role === 'admin') {
+                return redirect('/songs/create');
+            }
+            return redirect('/');
+        } else {
+            return back()->withErrors([
+                'email' => 'Tài khoản hoặc mật khẩu không chính xác.',
+            ]);
+        }
+    }
     public function logout2()
     {
         Session::flush();

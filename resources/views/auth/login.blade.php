@@ -38,11 +38,21 @@
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+
                     <form action="{{route('loginBe.auth')}}" method="post">
 
                         @csrf
 
                         <p class="h1 py-4 text-center text-primary">Welcome</p>
+                        @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <label class="form-label h3" for="form3Example3">Email address</label>

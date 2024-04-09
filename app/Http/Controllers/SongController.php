@@ -88,9 +88,15 @@ class SongController extends Controller
             $song->singers()->attach($request->input('singer'));
             $song->slug = $slug . '.' . $song->id;
             $song->save();
-            return response(['message' => 'add success'], 201);
+            // return response(['message' => 'add success'], 201);
+            return back()->withErrors([
+                'erro' => 'Thêm bài hát thành công.',
+            ]);
         } else {
-            return response(['message' => 'add fail'], 203);
+            // return response(['message' => 'add fail'], 203);
+            return back()->withErrors([
+                'erro' => 'Thêm bài hát thất bại.',
+            ]);
         }
     }
 
@@ -178,9 +184,15 @@ class SongController extends Controller
             $song->categories()->sync($request->input('category'));
             $song->singers()->sync($request->input('singer'));
 
-            return response(['message' => 'update success'], 200);
+            // return response(['message' => 'update success'], 200);
+            return back()->withErrors([
+                'erro' => 'edit thành công.',
+            ]);
         } else {
-            return response(['message' => 'update fail'], 203);
+            // return response(['message' => 'update fail'], 203);
+            return back()->withErrors([
+                'erro' => 'edit thất bại.',
+            ]);
         }
     }
     /**

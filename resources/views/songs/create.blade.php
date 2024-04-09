@@ -22,11 +22,7 @@
         <input type="file" name="thumbnail"> -->
         <div class="mb-3">
             <h3>categories</h3>
-
         </div>
-
-
-
         @foreach ($categories as $category)
         <label>{{$category->name}}<input type="checkbox" name="category[]" value="{{$category->id}}"></label>
         @endforeach
@@ -36,4 +32,13 @@
         @endforeach
         <input type="submit">
     </form>
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 </x-layout>

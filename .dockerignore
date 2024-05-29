@@ -2,4 +2,3 @@ vendor
 Dockerfile
 docker-compose.yml
 nginx.conf
-.env*

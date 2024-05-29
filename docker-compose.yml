@@ -6,6 +6,7 @@ services:
         restart: unless-stopped
         volumes:
             - ./:/var/www/html
+            - ./php.ini:/usr/local/etc/php/php.ini
         environment:
             DB_PASSWORD: ${DB_PASSWORD}
             DB_DATABASE: ${DB_DATABASE}
@@ -24,8 +25,6 @@ services:
             TZ: Asia/Ho_Chi_Minh
         volumes:
             - database:/var/lib/mysql
-            - ./datababse-strapi:/home/myhome
-            #- ./data:/var/lib/mysql # if you want to use a bind folder
         ports:
             - "3306:3306"
 
